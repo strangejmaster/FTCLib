@@ -26,6 +26,10 @@ public class GamepadEx {
             Button.LEFT_STICK_BUTTON, Button.RIGHT_STICK_BUTTON
     };
 
+    private final Sticks[] sticks = {
+            Stick.LEFT_X, Stick.LEFT_Y, Stick.RIGHT_X, Stick.RIGHT_Y
+    };
+
     /**
      * The constructor, that contains the gamepad object from the
      * opmode.
@@ -143,6 +147,36 @@ public class GamepadEx {
      */
     public double getRightX() {
         return gamepad.right_stick_x;
+    }
+
+    /**
+    * Returns whether the specified stick is out of a deadzone
+    * @param deadzone the minimum value at which the stick will be considered active
+    * @return whether the minimum deadzone has been reached or not
+    */
+    public boolean stickActive(Stick stick, double deadzone) {
+        boolean active = false;
+        double position = 0;
+        switch (stick) {
+            case Stick.LEFT_X:
+                position = gamepad.left_stick_x;
+                break;
+            case Stick.LEFT_Y:
+                position = gamepad.left_stick_y;
+                break;
+            case Stick.RIGHT_X:
+                position = gamepad.right_stick_x;
+                break;
+            case Stick.RIGHT_Y:
+                position = gamepad.right_stick_y;
+                break;
+            default:
+                break;
+        }
+        if (position > deadzone || position < -deadzone) {
+            active = true;
+        }
+        return active;
     }
 
     /**
